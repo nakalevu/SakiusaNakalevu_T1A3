@@ -2,45 +2,55 @@
 class Trivia
 
     def initialize
-# Letters for the user to select will be stored to an array instance variable used so it can be accessed from different methods in the class
-        @letters = ("a".."z").to_a
         @question = questions.sample
 
         # Number of chances user has before losing the trivia game
         @lives = 5
-
-        # Empty array to store correct guesses
-        @right_guesses = []
 
         # Correct letters to be stored in this instance variable
         @word_teaser = ""
 
         # This code will run a loop over depending on the number of charachters in the answer
         @question.first.size.times do
-            word_teaser += "_ "
+            @word_teaser += "_ "
         end
     end
 
-# Trivia questions...answers followed by the questions
+# Trivia questions...answers are followed by the questions
     def questions
         [
-            ["Webb Ellis Cup", "What is the Rugby World Cup trophy called?"],
-            ["New Zealand", "Which country won the first Rugby World Cup?"],
+            ["WebbEllisCup", "What is the Rugby World Cup trophy called?"],
+            ["NewZealand", "Which country won the first Rugby World Cup?"],
             ["Fiji", "Which country has won the rugby 7's gold medal in the Olympics twice?"],
-            ["John Eales", "Name Australia's most successful captain?"],
+            ["JohnEales", "Name Australia's most successful captain?"],
             ["Crusaders", "Name the most successful super rugby team?"],
             ["England", "Name the country that won the 2003 Rugby World Cup?"],
-            ["New Zealand", "Which country took first place in the inaugral HSBC worls 7's series?"],
-            ["South Africa", "Which country won the Rugby World Cup in 2007 & 2019?"],
+            ["NewZealand", "Which country took first place in the inaugral HSBC worls 7's series?"],
+            ["SouthAfrica", "Which country won the Rugby World Cup in 2007 & 2019?"],
         ]
     end
     
     def print_teaser last_guess = nil
-        word_teaser = ""
 
         # Update method to be called if last_guess method is not nil
-        update_teaser unless last_guess.nil?
-        puts word_teaser
+        update_teaser(last_guess) unless last_guess.nil?
+        puts @word_teaser
+    end
+
+    def update_teaser last_guess
+
+        # Output an array of underscores
+        new_teaser = @word_teaser.split
+
+        new_teaser.each_with_index do |letter, index|
+            # Correct letters will replace the underscores holding their place
+            if letter == '_' && @question.first[index] == last_guess
+                new_teaser[index] = last_guess
+            end
+        end
+
+        #Overriding instance variable with new value by joining array together as a string
+        @word_teaser = new_teaser.join(' ')
     end
 
 # Prompts user to select a letter
@@ -51,20 +61,25 @@ class Trivia
             # captures user input
             guess = gets.chomp
 
-            # Removes letters that raen't part of the answer from the array
+            # Removes letters that aren't part of the answer from the array
             correct_guess = @question.first.include? guess
 
+            # Option to exit quiz
+            if guess == "exit"
+                puts "Thank you for playing."
+
             # Output to screen depending on letter selected by user
-            if correct_guess
-                puts "Correct letter selected!"
-
-                @right_guesses << guess
-
-                # Remove selected letters from letter array
-                @letters.delete guess
+            elsif correct_guess
+                puts "Correct!"
 
                 print_teaser guess
-                guess_letter
+
+                # Checks that the teaser word matches the answer and removes the space between characters, spilts teaser into arrays first then joined into a string.
+                if @question.first == @word_teaser.split.join
+                    puts "Round won...Congratulations!"
+                else
+                    guess_letter
+                end
             else
 
                 # Reduces number of attempts by one
@@ -82,9 +97,11 @@ class Trivia
 # Begin quiz, ask user to select a letter
     def begin
         puts "Starting new quiz!" 
+        puts "Answers are case sensitive"
 
         # Displays question for the user to answer
         puts "Your question is: #{ @question.last }"
+        puts "Type 'exit' to leave quiz"
         print_teaser
 
         # Gives the user the number of letters/characters the answer has
