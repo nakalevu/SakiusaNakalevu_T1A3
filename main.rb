@@ -1,5 +1,9 @@
+require 'colorize'
+
+
+
 # Class for the rugby trivia app
-class Trivia
+class RugbyTrivia
 
     def initialize
         @question = questions.sample
@@ -56,7 +60,7 @@ class Trivia
 # Prompts user to select a letter
     def guess_letter
         if @lives > 0
-            puts "Guess a letter!"
+            puts "Guess a letter!".colorize(:blue)
 
             # captures user input
             guess = gets.chomp
@@ -66,17 +70,17 @@ class Trivia
 
             # Option to exit quiz
             if guess == "exit"
-                puts "Thank you for playing."
+                puts "Thank you for playing.".colorize(:blue)
 
             # Output to screen depending on letter selected by user
             elsif correct_guess
-                puts "Correct!"
+                puts "Correct!".colorize(:blue)
 
                 print_teaser guess
 
                 # Checks that the teaser word matches the answer and removes the space between characters, spilts teaser into arrays first then joined into a string.
                 if @question.first == @word_teaser.split.join
-                    puts "Round won...Congratulations!"
+                    puts "Round won...Congratulations!".colorize(:blue)
                 else
                     guess_letter
                 end
@@ -85,28 +89,27 @@ class Trivia
                 # Reduces number of attempts by one
                 @lives -= 1
 
-                puts "Sorry...you have #{ @lives } attempts remaining. Please try again!" #.colorize(:red).on_blue.underline
+                puts "Sorry...you have #{ @lives } attempts remaining. Please try again!".colorize(:red).on_blue.underline
                 guess_letter
             end
         else
-            puts "Better luck next time....Game over =(" #.colorize(:red).on_blue.underline
+            puts "Better luck next time....Game over =(".colorize(:red).on_blue.underline
         end
 
     end
 
 # Begin quiz, ask user to select a letter
     def begin
-        puts "Starting new quiz!" #.colorize(:blue)
-        puts "Answers are case sensitive" #.colorize(:blue)
-        puts "You have have 5 attempts"
+        puts "Starting new quiz!".colorize(:blue)
+        puts "Answers are case sensitive".colorize(:blue)
 
         # Displays question for the user to answer
-        puts "Your question is: #{ @question.last }" #.colorize(:blue)
-        puts "Type 'exit' to leave quiz" #.colorize(:blue)
+        puts "Your question is: #{ @question.last }".colorize(:blue)
+        puts "Type 'exit' to leave quiz".colorize(:blue)
         print_teaser
 
         # Gives the user the number of letters/characters the answer has
-        puts "Your answer has #{ @question.first.size } characters." #.colorize(:blue)
+        puts "Your answer has #{ @question.first.size } characters.".colorize(:blue)
 
         guess_letter
 
@@ -115,5 +118,5 @@ class Trivia
 
 end
 
-quiz = Trivia.new
+quiz = RugbyTrivia.new
 quiz.begin           
