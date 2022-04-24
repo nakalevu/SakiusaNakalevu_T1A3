@@ -1,3 +1,7 @@
-source "https://rubygems.org"
+# frozen_string_literal: true
 
-gem('colorize', '~> 0.8.1')
+source 'https://rubygems.org'
+
+gem 'colorize'
+gem 'cspec'
+gem 'rubocop'
