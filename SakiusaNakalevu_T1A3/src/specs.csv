@@ -1,0 +1,2 @@
+class,id,name,type,method,method_arg_1,method_arg_2,expected
+RugbyTrivia,__,__,begin,questions,first,Which country has won the rugby 7's gold medal in the Olympics twice?,Fiji
